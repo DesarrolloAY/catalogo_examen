@@ -9,30 +9,42 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  String textFromFile = 'Vacio';
-  // Variable para controlar que se muestre el texto al hacer clic en el boton
-  bool showText = false;
+  // Variables separadas para cada pestaña
+  String textDama = 'Vacio';
+  String textCaballero = 'Vacio';
+  bool showTextDama = false;
+  bool showTextCaballero = false;
 
   getDataDama() async {
-    //Carga el archio de texto
-    String response = await rootBundle.loadString('archivo_texto/dama.txt');
-    setState(() {
-      textFromFile = response;
-      //Reemplaza el boton por el texto del archivo
-      showText = true;
-    });
+    try {
+      String response = await rootBundle.loadString('archivo_texto/dama.txt');
+      setState(() {
+        textDama = response;
+        showTextDama = true;
+      });
+    } catch (e) {
+      setState(() {
+        textDama = 'Error al cargar archivo';
+        showTextDama = true;
+      });
+    }
   }
 
   getDataCaballero() async {
-    //Carga el archio de texto
-    String response = await rootBundle.loadString(
-      'archivo_texto/caballero.txt',
-    );
-    setState(() {
-      textFromFile = response;
-      //Reemplaza el boton por el texto del archivo
-      showText = true;
-    });
+    try {
+      String response = await rootBundle.loadString(
+        'archivo_texto/caballero.txt',
+      );
+      setState(() {
+        textCaballero = response;
+        showTextCaballero = true;
+      });
+    } catch (e) {
+      setState(() {
+        textCaballero = 'Error al cargar archivo';
+        showTextCaballero = true;
+      });
+    }
   }
 
   @override
@@ -64,68 +76,90 @@ class _TabsScreenState extends State<TabsScreen> {
         body: TabBarView(
           children: [
             // Página 01 - DAMA
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'images/dama.jpg',
-                    height: 200,
-                    fit: BoxFit.cover,
+            Stack(
+              children: [
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'images/dama.jpg',
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ),
+                      const SizedBox(width: 20),
+                      // Mostrar botón O texto para DAMA
+                      showTextDama
+                          ? SizedBox(
+                              width: 150,
+                              child: Text(
+                                textDama,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            )
+                          : ElevatedButton(
+                              onPressed: getDataDama,
+                              child: const Text('Descripción'),
+                            ),
+                    ],
                   ),
-                  const SizedBox(width: 20),
-
-                  // Mostrar botón O texto según el estado
-                  showText
-                      ? SizedBox(
-                          width: 150, // Mismo ancho que el botón
-                          child: Text(
-                            textFromFile,
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        )
-                      : ElevatedButton(
-                          onPressed: () {
-                            getDataDama();
-                          },
-                          child: const Text('Descripción'),
-                        ),
-                ],
-              ),
+                ),
+                // Botón de volver en posición fija
+                Positioned(
+                  bottom: 20,
+                  right: 20,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Volver al Inicio'),
+                  ),
+                ),
+              ],
             ),
 
             // Página 02 - CABALLERO
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'images/caballero.jpg',
-                    height: 200,
-                    fit: BoxFit.cover,
+            Stack(
+              children: [
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'images/caballero.jpg',
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ),
+                      const SizedBox(width: 20),
+                      // Mostrar botón O texto para CABALLERO
+                      showTextCaballero
+                          ? SizedBox(
+                              width: 150,
+                              child: Text(
+                                textCaballero,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            )
+                          : ElevatedButton(
+                              onPressed: getDataCaballero,
+                              child: const Text('Descripción'),
+                            ),
+                    ],
                   ),
-                  const SizedBox(width: 20),
-
-                  // Mostrar botón O texto según el estado
-                  showText
-                      ? SizedBox(
-                          width: 150, // Mismo ancho que el botón
-                          child: Text(
-                            textFromFile,
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        )
-                      : ElevatedButton(
-                          onPressed: () {
-                            getDataCaballero();
-                          },
-                          child: const Text('Descripción'),
-                        ),
-                ],
-              ),
+                ),
+                // Botón de volver en posición fija
+                Positioned(
+                  bottom: 20,
+                  right: 5,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Volver al Inicio'),
+                  ),
+                ),
+              ],
             ),
-
-            //Boton de regresar al inicio
           ],
         ),
       ),
