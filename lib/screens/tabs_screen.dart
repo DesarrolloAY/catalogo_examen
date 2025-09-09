@@ -16,35 +16,21 @@ class _TabsScreenState extends State<TabsScreen> {
   bool showTextCaballero = false;
 
   getDataDama() async {
-    try {
-      String response = await rootBundle.loadString('archivo_texto/dama.txt');
-      setState(() {
-        textDama = response;
-        showTextDama = true;
-      });
-    } catch (e) {
-      setState(() {
-        textDama = 'Error al cargar archivo';
-        showTextDama = true;
-      });
-    }
+    String response = await rootBundle.loadString('archivo_texto/dama.txt');
+    setState(() {
+      textDama = response;
+      showTextDama = true;
+    });
   }
 
   getDataCaballero() async {
-    try {
-      String response = await rootBundle.loadString(
-        'archivo_texto/caballero.txt',
-      );
-      setState(() {
-        textCaballero = response;
-        showTextCaballero = true;
-      });
-    } catch (e) {
-      setState(() {
-        textCaballero = 'Error al cargar archivo';
-        showTextCaballero = true;
-      });
-    }
+    String response = await rootBundle.loadString(
+      'archivo_texto/caballero.txt',
+    );
+    setState(() {
+      textCaballero = response;
+      showTextCaballero = true;
+    });
   }
 
   @override
