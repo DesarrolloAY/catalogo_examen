@@ -1,0 +1,5 @@
+Producto: CALIMOD
+Modelo: CABALLERO
+Venta: Solo via ONLINE
+Stock: Disponible
+Cantidad: 8 unidades

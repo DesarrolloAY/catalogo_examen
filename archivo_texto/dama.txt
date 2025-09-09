@@ -1,0 +1,5 @@
+Producto: BIGTREE
+Modelo: DAMA
+Venta: Individual
+Stock: Disponible
+Cantidad: 1 unidad
