@@ -10,25 +10,28 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   String textFromFile = 'Vacio';
+  // Variable para controlar que se muestre el texto al hacer clic en el boton
+  bool showText = false;
 
-  // Función para cargar datos del archivo
-  Future<void> getDataDama() async {
-    try {
-      String response = await rootBundle.loadString('archivo_texto/dama.txt');
-      setState(() {
-        textFromFile = response;
-      });
-    } catch (e) {
-      setState(() {
-        textFromFile = 'Error al cargar el archivo: $e';
-      });
-    }
+  getDataDama() async {
+    //Carga el archio de texto
+    String response = await rootBundle.loadString('archivo_texto/dama.txt');
+    setState(() {
+      textFromFile = response;
+      //Reemplaza el boton por el texto del archivo
+      showText = true;
+    });
   }
 
-  // Función para limpiar el texto
-  void clearDama() {
+  getDataCaballero() async {
+    //Carga el archio de texto
+    String response = await rootBundle.loadString(
+      'archivo_texto/caballero.txt',
+    );
     setState(() {
-      textFromFile = 'Vacio';
+      textFromFile = response;
+      //Reemplaza el boton por el texto del archivo
+      showText = true;
     });
   }
 
@@ -62,7 +65,7 @@ class _TabsScreenState extends State<TabsScreen> {
           children: [
             // Página 01 - DAMA
             Center(
-              child: Column(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
@@ -70,57 +73,59 @@ class _TabsScreenState extends State<TabsScreen> {
                     height: 200,
                     fit: BoxFit.cover,
                   ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: getDataDama,
-                    child: const Text('Descripción'),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: clearDama,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text('Limpiar'),
-                  ),
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      textFromFile,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
+                  const SizedBox(width: 20),
+
+                  // Mostrar botón O texto según el estado
+                  showText
+                      ? SizedBox(
+                          width: 150, // Mismo ancho que el botón
+                          child: Text(
+                            textFromFile,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        )
+                      : ElevatedButton(
+                          onPressed: () {
+                            getDataDama();
+                          },
+                          child: const Text('Descripción'),
+                        ),
                 ],
               ),
             ),
 
             // Página 02 - CABALLERO
             Center(
-              child: Column(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.face_5, size: 80, color: Colors.blue),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Calzados para Caballero',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Image.asset(
+                    'images/caballero.jpg',
+                    height: 200,
+                    fit: BoxFit.cover,
                   ),
-                  const SizedBox(height: 8),
-                  const Text('Estilos: Formales, Casuales, Deportivos'),
-                  const SizedBox(height: 8),
-                  const Text('Talles: 38 al 45'),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Puedes agregar funcionalidad similar para caballero
-                    },
-                    child: const Text('Ver Catálogo'),
-                  ),
+                  const SizedBox(width: 20),
+
+                  // Mostrar botón O texto según el estado
+                  showText
+                      ? SizedBox(
+                          width: 150, // Mismo ancho que el botón
+                          child: Text(
+                            textFromFile,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        )
+                      : ElevatedButton(
+                          onPressed: () {
+                            getDataCaballero();
+                          },
+                          child: const Text('Descripción'),
+                        ),
                 ],
               ),
             ),
+
+            //Boton de regresar al inicio
           ],
         ),
       ),
